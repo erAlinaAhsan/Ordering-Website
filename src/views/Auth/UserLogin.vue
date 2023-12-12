@@ -11,8 +11,10 @@
               <img src="../../../assets/logo/logo.svg" alt="" class="w-10" />
             </div> -->
             <div class="space-y-3">
-              <h2 class="dark:text-white font-semibold text-gray-800 text-4xl">
-                Welcome, to Qart<span class="text-primary">.</span>
+              <h2
+                class="dark:text-white mb-8 font-semibold text-gray-800 flex justify-center gap-2 text-4xl"
+              >
+                Cart it!
               </h2>
               <p class="dark:text-gray-400 text-gray-700">
                 Please enter your account to continue.
@@ -113,9 +115,6 @@
           </div>
         </form>
       </div>
-      <div
-        class="bg-wave dark:bg-gray-900 bg-white w-2/5 lg:block hidden"
-      ></div>
     </div>
   </div>
 </template>
@@ -176,24 +175,4 @@ export default {
 </script>
 
 <style>
-.bg-wave {
-  background: radial-gradient(
-      circle at top left,
-      transparent 25%,
-      #4f46e5 25.5%,
-      #4f46e5 36%,
-      transparent 37%,
-      transparent 100%
-    ),
-    radial-gradient(
-      circle at bottom right,
-      transparent 34%,
-      #4f46e5 34.5%,
-      #4f46e5 45.5%,
-      transparent 46%,
-      transparent 100%
-    );
-  background-size: 6em 6em;
-  opacity: 1;
-}
 </style>

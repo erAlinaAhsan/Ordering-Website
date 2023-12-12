@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import HomeView from '../components/HomeView.vue'
 import UserRegister from "../views/Auth/UserRegister.vue";
 import UserLogin from "../views/Auth/UserLogin.vue";
 
 const routes = [
   {
-    path: '/',
+    path: '/home',
     name: 'home',
     component: HomeView
   },
@@ -18,72 +18,21 @@ const routes = [
   //   component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
   // },
   {
-    path: "/auth/register",
+    path: "/register",
     name: "register",
     component: UserRegister
   },
   {
-    path: "/auth/login",
+    path: "/login",
     name: "login",
     component: UserLogin
   },
-  {
-    path: "/Product/:id/:name/:image/:desc/:price",
-    name: "Product",
-    component: () => import("../views/ProductDetail.vue"),
-  },
-  {
-    path: "/navbar",
-    name: "NavBar",
-    component: () => import("../components/global/NavBar.vue"),
-  },
-  {
-    path: "/features",
-    name: "FeaturesSec",
-    component: () => import("../components/FeaturesSec.vue"),
-  },
-  {
-    path: "/topbar",
-    name: "TopBar",
-    component: () => import("../components/global/TopBar.vue"),
-  },
-  {
-    path: "/sidebar",
-    name: "SideBar",
-    component: () => import("../components/global/SideBar.vue"),
-  },
 
-  {
-    path: "/cart/:cartItems",
-    name: "ShoppingCart",
-    component: () => import("../views/ShoppingCart.vue"),
-  },
-  {
-    path: "/footer",
-    name: "FooterSec",
-    component: () => import("../components/global/FooterSec.vue"),
-  },
-  {
-    path: "/category",
-    name: "categSec",
-    component: () => import("../components/CategSec.vue"),
-  },
-  {
-    path: "/offers",
-    name: "OfferSec",
-    component: () => import("../components/OfferSec.vue"),
-  },
-  {
-    path: "/header",
-    name: "HeaderSec",
-    component: () => import("../components/global/HeaderSec.vue"),
-  },
-  {
-    path: "/helloworld",
-    name: "HelloWorld",
-    component: () => import("../components/HelloWorld.vue"),
-  },
-
+  // {
+  //   path: "/helloworld",
+  //   name: "HelloWorld",
+  //   component: () => import("../components/HelloWorld.vue"),
+  // },
 ]
 
 const router = createRouter({
