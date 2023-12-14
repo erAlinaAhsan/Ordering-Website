@@ -1,5 +1,12 @@
+// components routes...
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../components/HomeView.vue'
+import ShoppingCart from '../components/ShoppingCart.vue'
+import SingleProduct from '../components/SingleProduct.vue'
+import AllProducts from '../components/AllProducts.vue'
+import AllCategories from '../components/AllCategories.vue'
+
+// login routes...
 import UserRegister from "../views/Auth/UserRegister.vue";
 import UserLogin from "../views/Auth/UserLogin.vue";
 
@@ -9,14 +16,31 @@ const routes = [
     name: 'home',
     component: HomeView
   },
-  // {
-  //   path: '/about',
-  //   name: 'about',
-  //   // route level code-splitting
-  //   // this generates a separate chunk (about.[hash].js) for this route
-  //   // which is lazy-loaded when the route is visited.
-  //   component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  // },
+  {
+    path: '/cart',
+    name: 'cart',
+    component: ShoppingCart
+  },
+  {
+    path: '/product',
+    name: 'product',
+    component: SingleProduct
+  },
+
+  {
+    path: '/products',
+    name: 'products',
+    component: AllProducts
+  },
+
+  {
+    path: '/categories',
+    name: 'categories',
+    component: AllCategories
+  },
+
+  //login routes
+
   {
     path: "/register",
     name: "register",
@@ -27,12 +51,6 @@ const routes = [
     name: "login",
     component: UserLogin
   },
-
-  // {
-  //   path: "/helloworld",
-  //   name: "HelloWorld",
-  //   component: () => import("../components/HelloWorld.vue"),
-  // },
 ]
 
 const router = createRouter({
