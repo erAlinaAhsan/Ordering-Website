@@ -66,11 +66,21 @@
         </div>
       </div>
     </div>
+    <ShopByCategory></ShopByCategory>
+    <ProductCard></ProductCard>
   </div>
 </template>
 
 <script>
+import ProductCard from "../components/ProductCard.vue";
+import ShopByCategory from "../components/ShopByCategory.vue";
+
 export default {
+  name: "HomeView",
+  components: {
+    ShopByCategory,
+    ProductCard,
+  },
   data() {
     return {
       currentImage: 0,
