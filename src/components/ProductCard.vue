@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h1 class="text-xl font-medium mb-6">Browse Products</h1>
+    <h1 class="text-xl font-medium mb-6">You may also like</h1>
     <div class="product-container">
       <router-link
         v-for="product in products"
@@ -14,7 +14,9 @@
         <img :src="product.image" alt="Product Image" class="product-image" />
         <div class="product-details">
           <p class="font-semibold">{{ product.name }}</p>
-          <button class="add-to-cart-btn">ADD TO CART</button>
+          <!-- <button class="add-to-cart-btn" @click="addToCart(product)">
+            ADD TO CART
+          </button> -->
         </div>
       </router-link>
     </div>
@@ -48,6 +50,20 @@ export default {
         console.error("API Error:", error);
       }
     },
+    // addToCart(product) {
+    //   axios
+    //     .post("https://ecommerce.hyperzod.dev/api/user/cart/add", {
+    //       productId: product.id,
+    //       quantity: 1, // You can adjust the quantity as needed
+    //     })
+    //     .then(() => {
+    //       // Redirect to the shopping cart page
+    //       this.$router.push({ name: "cart" });
+    //     })
+    //     .catch((error) => {
+    //       console.error("API Error:", error);
+    //     });
+    // },
   },
   mounted() {
     this.fetchProducts();
@@ -80,7 +96,7 @@ export default {
 
 .product-image {
   width: 100%;
-  height: 150px;
+  height: 250px;
   object-fit: cover;
   border-radius: 4px;
   margin-bottom: 1rem;

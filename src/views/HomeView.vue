@@ -1,18 +1,20 @@
 <template>
   <div class="relative overflow-hidden">
-    <div class="w-full h-1/2 flex items-center">
-      <!-- Slideshow container -->
-      <div
-        class="w-full h-full flex transition-transform duration-500 ease-in-out transform"
-        :style="{ transform: `translateX(-${currentImage * 25}%)` }"
-      >
-        <!-- Image 1 -->
-        <div class="w-full h-full">
+    <!-- Swiper Container -->
+    <div class="swiper-container">
+      <div class="swiper-wrapper">
+        <!-- Slide 1 -->
+        <div
+          class="swiper-slide"
+          @click="
+            redirectToAllCategories(require('@/assets/banner-clogs.webp'))
+          "
+        >
           <div class="card">
             <img
               :src="require('@/assets/banner-clogs.webp')"
               alt="Banner Image"
-              class="w-full h-full object-cover transform transition-transform hover:scale-105"
+              class="w-1/4 h-1/4 object-cover transform transition-transform hover:scale-105"
             />
             <h6 class="font-bold text-warning mb-3">Upto 60% + Extra 10%</h6>
             <h3 class="font-bold mb-3">Special Offer</h3>
@@ -22,51 +24,67 @@
           </div>
         </div>
 
-        <!-- Image 2 -->
-        <div class="w-full h-full">
+        <!-- Slide 2 -->
+        <div
+          class="swiper-slide"
+          @click="
+            redirectToAllCategories(require('@/assets/banner-shoes.webp'))
+          "
+        >
           <div class="card">
             <img
               :src="require('@/assets/banner-shoes.webp')"
               alt="Banner Image"
-              class="w-full h-full object-cover transform transition-transform hover:scale-105"
+              class="w-1/4 h-1/4 object-cover transform transition-transform hover:scale-105"
             />
           </div>
         </div>
 
-        <div class="w-full h-full">
+        <!-- Slide 3 -->
+        <div
+          class="swiper-slide"
+          @click="
+            redirectToAllCategories(require('@/assets/banner-phones.webp'))
+          "
+        >
           <div class="card">
             <img
               :src="require('@/assets/banner-phones.webp')"
               alt="Banner Image"
-              class="w-full h-full object-cover transform transition-transform hover:scale-105"
+              class="w-1/4 h-1/4 object-cover transform transition-transform hover:scale-105"
             />
           </div>
         </div>
 
-        <!-- Image 3 -->
-        <div class="w-full h-full">
+        <!-- Slide 4 -->
+        <div
+          class="swiper-slide"
+          @click="
+            redirectToAllCategories(require('@/assets/banner-laptops.jpg'))
+          "
+        >
           <div class="card">
             <img
               :src="require('@/assets/banner-laptops.jpg')"
               alt="Banner Image"
-              class="w-full h-full object-cover transform transition-transform hover:scale-105"
+              class="w-1/4 h-1/4 object-cover transform transition-transform hover:scale-105"
             />
           </div>
         </div>
 
-        <!-- Image 4 -->
-        <div class="w-full h-full">
-          <div class="card">
-            <img
-              :src="require('@/assets/banner-bags.jpg')"
-              alt="Banner Image"
-              class="w-full h-full object-cover transform transition-transform hover:scale-105"
-            />
-          </div>
-        </div>
+        <!-- Add more slides as needed -->
       </div>
+      <!-- Add Pagination -->
+      <div class="swiper-pagination"></div>
+      <!-- Add Navigation -->
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
     </div>
+
+    <!-- ShopByCategory Component -->
     <ShopByCategory></ShopByCategory>
+
+    <!-- ProductCard Component -->
     <ProductCard></ProductCard>
   </div>
 </template>
@@ -74,6 +92,8 @@
 <script>
 import ProductCard from "../components/ProductCard.vue";
 import ShopByCategory from "../components/ShopByCategory.vue";
+import Swiper from "swiper";
+import "swiper/swiper-bundle.css";
 
 export default {
   name: "HomeView",
@@ -83,19 +103,33 @@ export default {
   },
   data() {
     return {
-      currentImage: 0,
+      swiper: null,
     };
   },
-  mounted() {
-    // Start the slideshow
-    this.startSlideshow();
-  },
   methods: {
-    startSlideshow() {
-      setInterval(() => {
-        this.currentImage = (this.currentImage + 1) % 4; // Change the number based on the number of images
-      }, 2000); // Change image every 5 seconds (adjust as needed)
+    initSwiper() {
+      this.swiper = new Swiper(".swiper-container", {
+        loop: true,
+        spaceBetween: 10,
+        slidesPerView: 1,
+        pagination: {
+          el: ".swiper-pagination",
+          clickable: true,
+        },
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+        },
+      });
     },
+    redirectToAllCategories() {
+      // Redirect to the "All Categories" page
+      this.$router.push({ name: "categories" });
+    },
+  },
+  mounted() {
+    // Initialize Swiper when the component is mounted
+    this.initSwiper();
   },
 };
 </script>

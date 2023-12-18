@@ -1,8 +1,14 @@
 <template>
   <div class="category-section">
     <nav class="flex-div1">
+      <button
+        class="mt-1 bg-gray-200 text-gray-800 px-4 py-2 rounded"
+        @click="redirectToAllProducts"
+      >
+        Browse Products
+      </button>
       <h4
-        class="tags"
+        class="mt-1 bg-gray-200 text-gray-800 px-4 py-2 rounded"
         v-for="category in categories"
         :key="category.id"
         @click="loadProductsByCategory(category.id)"
@@ -10,20 +16,6 @@
         {{ category.name }}
       </h4>
     </nav>
-
-    <div class="product-container">
-      <div
-        v-for="product in filteredProducts"
-        :key="product.id"
-        class="product-card"
-      >
-        <img :src="product.image" alt="Product Image" class="product-image" />
-        <div class="product-details">
-          <p class="font-semibold">{{ product.name }}</p>
-          <button class="add-to-cart-btn">ADD TO CART</button>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -33,10 +25,7 @@ import axios from "axios";
 export default {
   data() {
     return {
-      baseURL: "https://ecommerce.hyperzod.dev/api/user/products",
       categories: [],
-      products: [],
-      selectedCategoryId: null,
     };
   },
   methods: {
@@ -50,26 +39,18 @@ export default {
         console.error("API Error:", error);
       }
     },
-    async loadProductsByCategory(categoryId) {
-      try {
-        const response = await axios.get(
-          `https://ecommerce.hyperzod.dev/api/user/products/${categoryId}`
-        );
-        this.products = response.data.data;
-        this.selectedCategoryId = categoryId;
-      } catch (error) {
-        console.error("API Error:", error);
-      }
+    redirectToAllProducts() {
+      this.$router.push({
+        name: "products",
+      });
     },
-  },
-  computed: {
-    filteredProducts() {
-      // If a category is selected, filter products by categoryId
-      return this.selectedCategoryId
-        ? this.products.filter(
-            (product) => product.categoryId === this.selectedCategoryId
-          )
-        : this.products;
+
+    loadProductsByCategory(categoryId) {
+      // Use the router to navigate to the CategoryProducts page with the selected category ID
+      this.$router.push({
+        name: "category-products",
+        query: { categoryId: categoryId },
+      });
     },
   },
   mounted() {
@@ -77,6 +58,7 @@ export default {
   },
 };
 </script>
+
 
 
 
@@ -112,33 +94,19 @@ nav.flex-div1 {
 ::-webkit-scrollbar-track {
   background-color: #f0f0f0; /* Track color */
 }
-.tags {
-  display: flex;
-  justify-content: flex-start;
-  align-self: center;
-  border: 1px solid #ccc;
-  padding: 10px;
-  color: #9e9e9e;
-  border-radius: 5px;
-  width: fit-content;
 
-  border: 0;
-  outline: 0;
-  font-size: 14px;
-  background-color: rgb(26, 25, 25);
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-right: 10px;
-}
 .tags:first-child {
   margin-left: 540px;
 }
 
+button,
+button:hover,
 h4:hover {
   /* padding: 12px; */
   /* transition: padding 0.4s ease; */
   /* border-radius: 5px; */
-  background-color: rgb(48, 47, 47);
+  background-color: rgb(112, 113, 122);
+  cursor: pointer;
   /* color: black; */
 }
 

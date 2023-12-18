@@ -40,30 +40,15 @@ import axios from "axios";
 export default {
   data() {
     return {
-      baseURL: "https://ecommerce.hyperzod.dev/api/user/products",
       products: [],
     };
   },
   methods: {
-    async fetchProducts() {
-      try {
-        const response = await axios.get(this.baseURL);
-        console.log(response);
-        this.products = response.data.data.map((product) => ({
-          ...product,
-          showDetails: false,
-        }));
-        this.loading = false;
-      } catch (error) {
-        console.error("API Error:", error);
-        this.loading = false;
-      }
-    },
     addToCart(product) {
       // Make a POST request to add the product to the shopping cart
       axios
         .post("https://ecommerce.hyperzod.dev/api/user/cart/add", {
-          product_id: product.id,
+          productId: product.id,
           quantity: 1, // You can adjust the quantity as needed
         })
         .then(() => {
@@ -76,11 +61,23 @@ export default {
     },
   },
   mounted() {
-    this.fetchProducts();
+    // Retrieve the category ID from the route query
+    const categoryId = this.$route.query.categoryId;
+
+    if (categoryId) {
+      axios
+        .get(`https://ecommerce.hyperzod.dev/api/admin/category/${categoryId}`)
+        .then((response) => {
+          this.products = response.data.data;
+        })
+        .catch((error) => {
+          console.error("API Error:", error);
+        });
+    }
   },
 };
 </script>
 
-<style scoped>
-/* Add styles as needed */
+<style>
+/* Add your styles here */
 </style>

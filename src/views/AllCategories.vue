@@ -5,6 +5,7 @@
         v-for="category in categories"
         :key="category.id"
         class="md:w-5/12 sm:w-5/12 xs:w-full"
+        @click="loadProductsByCategory(category.id)"
       >
         <div class="md:w-7/12 sm:w-7/12 xs:w-full">
           <div class="pl-6">
@@ -45,7 +46,10 @@
     <div class="w-full">
       <div class="flex">
         <div class="md:w-4/12 sm:w-4/12">
-          <div class="hover:shadow-xl transition duration-300 ease-in-out">
+          <div
+            class="hover:shadow-xl transition duration-300 ease-in-out"
+            @click="loadProductsByCategory(3)"
+          >
             <img
               :src="require('@/assets/banner-bags.jpg')"
               alt="Product Image"
@@ -86,6 +90,13 @@ export default {
       } catch (error) {
         console.error("API Error:", error);
       }
+    },
+    loadProductsByCategory(categoryId) {
+      // Use the router to navigate to the CategoryProducts page with the selected category ID
+      this.$router.push({
+        name: "category-products",
+        query: { categoryId: categoryId },
+      });
     },
   },
   mounted() {

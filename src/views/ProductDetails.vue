@@ -16,12 +16,13 @@
           <div class="flex mt-4">
             <button
               class="mt-2 mr-4 bg-gray-200 text-gray-800 px-4 py-2 rounded"
+              @click="addToCart(product)"
             >
               ADD TO CART
             </button>
-            <button class="mt-2 bg-gray-200 text-gray-800 px-4 py-2 rounded">
-              ADD TO WISHLIST
-            </button>
+            <div v-if="successMessage" class="text-green-500">
+              {{ successMessage }}
+            </div>
           </div>
         </div>
       </div>
@@ -30,12 +31,38 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   props: {
     product: {
       type: Object,
       required: true,
       default: () => ({}),
+    },
+  },
+  data() {
+    return {
+      successMessage: null,
+    };
+  },
+  methods: {
+    addToCart(product) {
+      // Make a POST request to add the product to the shopping cart
+      axios
+        .post("https://ecommerce.hyperzod.dev/api/user/cart/add", {
+          product_id: product.id,
+          quantity: 1, // You can adjust the quantity as needed
+        })
+        .then(() => {
+          this.successMessage = "Product added to cart successfully!";
+          // You may choose to redirect to the cart after a delay
+          setTimeout(() => {
+            this.successMessage = null;
+          }, 2000);
+        })
+        .catch((error) => {
+          console.error("API Error:", error);
+        });
     },
   },
 };

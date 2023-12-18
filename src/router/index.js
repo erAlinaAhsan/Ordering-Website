@@ -2,10 +2,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import ShoppingCart from '../views/ShoppingCart.vue';
-import SingleProduct from '../components/SingleProduct.vue';
 import AllProducts from '../views/AllProducts.vue';
 import ProductDetails from '../views/ProductDetails.vue'
-
+import CategoryProducts from '../views/CategoryProducts.vue';
 import AllCategories from '../views/AllCategories.vue';
 import ShopByCategory from '../components/ShopByCategory.vue';
 import ProductCard from "../components/ProductCard.vue";
@@ -25,11 +24,7 @@ const routes = [
     name: 'cart',
     component: ShoppingCart,
   },
-  {
-    path: '/product',
-    name: 'product',
-    component: SingleProduct,
-  },
+
   {
     path: '/products',
     name: 'products',
@@ -45,6 +40,11 @@ const routes = [
     path: '/productcard',
     name: 'productcard',
     component: ProductCard,
+  },
+  {
+    path: '/category-products',
+    name: 'category-products',
+    component: CategoryProducts,
   },
   // {
   //   path: '/products/:id',
