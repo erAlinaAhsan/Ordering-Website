@@ -16,21 +16,20 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item, index) in cartItems.products" :key="index">
+            <tr>
               <td>
                 <div class="flex items-center">
                   <img
-                    :src="item.image"
+                    :src="cartItems.image"
                     alt="Product Image"
                     class="w-16 h-16 object-cover rounded mr-2"
                   />
                   <div>
-                    <p class="font-bold">{{ item.name }}</p>
-                    <p class="text-sm">{{ item.description }}</p>
+                    <p class="font-bold">{{ cartItems.name }}</p>
                   </div>
                 </div>
               </td>
-              <td>{{ item.price }}</td>
+              <td>{{ cartItems.price }}</td>
               <!-- <td>
                 <input
                   type="number"
@@ -39,7 +38,7 @@
                 />
               </td> -->
               <td>
-                <a @click="removeCartItem(index)">X</a>
+                <a @click="removeCartItem()">X</a>
               </td>
             </tr>
           </tbody>
@@ -76,11 +75,15 @@
 
         <div class="text-center mt-5">
           <button
+            v-if="!orderPlaced"
             class="bg-blue-500 text-white px-4 py-2 rounded"
             @click="placeOrder"
           >
             Place Order
           </button>
+          <p v-if="orderPlaced" class="text-green-600 font-bold">
+            Order placed successfully!
+          </p>
         </div>
       </div>
     </div>
@@ -115,76 +118,110 @@ export default {
         tax: 0,
         total: 0,
       },
+      orderPlaced: false,
+      cartId: null,
     };
   },
   methods: {
-    async fetchCartDetails() {
+    async fetchCartDetails(cartId) {
       try {
         const response = await axios.get(
-          "https://ecommerce.hyperzod.dev/api/view-cart"
+          `https://ecommerce.hyperzod.dev/api/cart/${cartId}`
         );
-        this.cartItems = response.data.data.cart.products;
+        var cartData = response.data.data.cart;
+        console.log(cartData);
+        if (cartData.product) {
+          this.cartItems = cartData.product; // Convert the product to an array
+        } else {
+          this.cartItems = null; // If no product in the cart, set an empty array
+        }
         this.calculateOrderSummary();
       } catch (error) {
         console.error("API Error:", error);
       }
     },
+    calculateOrderSummary() {
+      if (this.cartItems) {
+        this.orderSummary.subtotal = +this.cartItems.price;
+        this.orderSummary.shippingCharges = 100;
+        this.orderSummary.tax = this.cartItems.price * 0.05;
+        this.orderSummary.total =
+          this.orderSummary.subtotal +
+          this.orderSummary.shippingCharges +
+          this.orderSummary.tax;
+        console.log(this.orderSummary.total);
+        this.orderSummary.total = parseFloat(this.orderSummary.total).toFixed(
+          2
+        );
+        return;
+      }
+
+      const cartItem = this.cartItems;
+      console.log("First Cart Item:", cartItem);
+
+      if (!cartItem.cart) {
+        console.log("Cart not available in the first item");
+        this.orderSummary = {
+          subtotal: "0.00",
+          shippingCharges: 0,
+          tax: "0.00",
+          total: "0.00",
+        };
+        return;
+      }
+    },
 
     removeCartItem(index) {
-      const itemId = this.cartItems[index].id;
+      const itemId = this.cartItems.id;
+      console.log(itemId);
       axios
-        .delete(`https://ecommerce.hyperzod.dev/api/view-cart/${itemId}`)
+        .delete(`https://ecommerce.hyperzod.dev/api/cart/${itemId}`)
         .then(() => {
           this.cartItems.splice(index, 1);
           this.calculateOrderSummary();
+          // this.$router.push(`/cart/${this.cartId}`);
         })
         .catch((error) => {
-          console.error("API Error:", error);
+          if (error.response && error.response.status === 404) {
+            console.error("Item not found:", error.response.data.message);
+            // Handle 404 error (e.g., display a message to the user)
+          } else {
+            console.error("API Error:", error);
+          }
         });
     },
-    calculateOrderSummary() {
-      const subtotal = this.cartItems.reduce(
-        (total, item) => total + parseFloat(item.price) * item.pivot.quantity,
-        0
-      );
-      const shippingCharges = 10; // You may fetch this dynamically from the server
-      const tax = subtotal * 0.05; // You may fetch tax rate dynamically from the server
-      const total = subtotal + shippingCharges + tax;
 
-      this.orderSummary = {
-        subtotal: subtotal.toFixed(2),
-        shippingCharges,
-        tax: tax.toFixed(2),
-        total: total.toFixed(2),
-      };
-    },
     async placeOrder() {
       try {
-        // You might need to adjust the data sent in the request body based on your API requirements
         const response = await axios.post(
-          "https://ecommerce.hyperzod.dev/api/user/order/place",
+          "https://ecommerce.hyperzod.dev/api/user/place-order",
           {
-            // Add any data you need to send with the order
-            // For example, you might want to include the cart items, user information, etc.
-            // Modify this based on your API's expectations
             cartItems: this.cartItems,
-            // Add other relevant data as needed
           }
         );
 
-        // Assuming the API returns a status in the response
         const orderStatus = response.data.status;
         console.log("Order Status:", orderStatus);
 
-        // You might want to perform additional actions based on the order status
-        // For example, redirect to a confirmation page, show a message, etc.
+        if (orderStatus === "success") {
+          // Order placed successfully, update the state
+          this.orderPlaced = true;
+
+          // Redirect to view order page after a short delay
+          setTimeout(() => {
+            this.$router.push(`/view-order/${order_id}`);
+          }, 2000);
+        }
       } catch (error) {
         console.error("API Error:", error);
       }
     },
   },
   mounted() {
-    this.fetchCartDetails();
+    const cartId = this.$route.params.cartId; // Extract cart ID from the route
+    console.log(cartId);
+    this.cartId = cartId;
+    this.fetchCartDetails(cartId);
   },
 };
 </script>

@@ -153,13 +153,13 @@ export default {
       }
     },
     redirectToDashboard() {
-      this.$router.push("/").then(() => {
+      this.$router.push("/home").then(() => {
         this.showLoginSuccessAlert();
       });
     },
     showLoginSuccessAlert() {
       Swal.fire({
-        text: "Register Success",
+        text: "Login Success",
         icon: "success",
       });
     },
@@ -170,6 +170,44 @@ export default {
         icon: "error",
       });
     },
+    checkStoredToken() {
+      const storedToken = localStorage.getItem("authToken");
+
+      if (storedToken) {
+        // If a token is found, attempt automatic login
+        this.performAutomaticLogin(storedToken);
+      }
+    },
+    async performAutomaticLogin(token) {
+      try {
+        const response = await axios.get(
+          "https://ecommerce.hyperzod.dev/api/user/login",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (response.data.success) {
+          // If the token is valid, redirect to the dashboard
+          this.redirectToDashboard();
+        } else {
+          // If the token is not valid, show an error and clear the stored token
+          this.showLoginErrorAlert();
+          localStorage.removeItem("authToken");
+        }
+      } catch (error) {
+        console.error("API Error:", error);
+        // Handle API error, show an error, and clear the stored token
+        this.showLoginErrorAlert();
+        localStorage.removeItem("authToken");
+      }
+    },
+  },
+  mounted() {
+    // When the component is mounted, check for a stored token
+    this.checkStoredToken();
   },
 };
 </script>

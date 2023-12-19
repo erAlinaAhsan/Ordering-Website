@@ -46,23 +46,24 @@ export default {
     };
   },
   methods: {
-    addToCart(product) {
-      // Make a POST request to add the product to the shopping cart
-      axios
-        .post("https://ecommerce.hyperzod.dev/api/user/cart/add", {
-          product_id: product.id,
-          quantity: 1, // You can adjust the quantity as needed
-        })
-        .then(() => {
-          this.successMessage = "Product added to cart successfully!";
-          // You may choose to redirect to the cart after a delay
-          setTimeout(() => {
-            this.successMessage = null;
-          }, 2000);
-        })
-        .catch((error) => {
-          console.error("API Error:", error);
-        });
+    async addToCart(product) {
+      try {
+        const response = await axios.post(
+          "https://ecommerce.hyperzod.dev/api/cart/add",
+          {
+            product_id: product.id,
+            quantity: 1,
+          }
+        );
+        const cartId = response.data.data.cart.id; // Extract cart ID from the response
+        this.successMessage = "Product added to cart successfully!";
+        setTimeout(() => {
+          this.successMessage = null;
+        }, 2000);
+        this.$router.push(`/cart/${cartId}`); // Redirect to the cart with the cart ID
+      } catch (error) {
+        console.error("API Error:", error);
+      }
     },
   },
 };
