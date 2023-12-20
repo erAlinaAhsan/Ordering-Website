@@ -20,12 +20,6 @@
             />
             <div class="p-4 bg-white">
               <p class="text-lg font-semibold">{{ product.name }}</p>
-              <button
-                class="mt-2 mr-4 bg-gray-200 text-gray-800 px-4 py-2 rounded"
-                @click="addToCart(product)"
-              >
-                ADD TO CART
-              </button>
             </div>
           </div>
         </router-link>

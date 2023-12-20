@@ -70,7 +70,7 @@ export default {
 nav.flex-div1 {
   display: flex;
   /* flex-wrap: wrap; */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  
   align-items: center;
 
   /* position: absolute; */
@@ -86,13 +86,10 @@ nav.flex-div1 {
   height: 5px;
 }
 
-::-webkit-scrollbar-thumb {
-  background-color: #a0a0a0; /* Thumb color */
-  border-radius: 4px; /* Round the corners of the thumb */
-}
+
 
 ::-webkit-scrollbar-track {
-  background-color: #f0f0f0; /* Track color */
+  background-color: #fff; /* Track color */
 }
 
 .tags:first-child {

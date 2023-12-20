@@ -10,35 +10,34 @@
             <tr>
               <th class="text-center">ITEM</th>
               <th class="text-center">PRICE</th>
-              <!-- <th class="text-center">QUANTITY</th> -->
-              <th class="text-center">ACTION</th>
+              <th class="text-center">QUANTITY</th>
               <th class="text-center">TOTAL</th>
+              <th class="text-center">ACTION</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr v-for="(item, index) in cartItems" :key="index">
               <td>
                 <div class="flex items-center">
                   <img
-                    :src="cartItems.image"
+                    :src="item.product.image"
                     alt="Product Image"
                     class="w-16 h-16 object-cover rounded mr-2"
                   />
                   <div>
-                    <p class="font-bold">{{ cartItems.name }}</p>
+                    <p class="font-bold">{{ item.product.name }}</p>
                   </div>
                 </div>
               </td>
-              <td>{{ cartItems.price }}</td>
-              <!-- <td>
-                <input
-                  type="number"
-                  class="w-16 p-2 border"
-                  v-model="item.quantity_in_stock"
-                />
-              </td> -->
+              <td>{{ item.product.price }}</td>
               <td>
-                <a @click="removeCartItem()">X</a>
+                <p class="font-bold">{{ item.quantity }}</p>
+              </td>
+              <td>
+                <p class="font-bold">{{ calculateItemTotalPrice(item) }}</p>
+              </td>
+              <td>
+                <a @click="removeCartItem(index)">X</a>
               </td>
             </tr>
           </tbody>
@@ -82,7 +81,7 @@
             Place Order
           </button>
           <p v-if="orderPlaced" class="text-green-600 font-bold">
-            Order placed successfully!
+            Order placed successfully! Redirecting to view order page...
           </p>
         </div>
       </div>
@@ -100,8 +99,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Repeat similar structure for other information -->
   </div>
 </template>
 
@@ -120,6 +117,8 @@ export default {
       },
       orderPlaced: false,
       cartId: null,
+      orderStatus: null,
+      orderId: null, // New property to store the order ID
     };
   },
   methods: {
@@ -128,10 +127,10 @@ export default {
         const response = await axios.get(
           `https://ecommerce.hyperzod.dev/api/cart/${cartId}`
         );
-        var cartData = response.data.data.cart;
-        console.log(cartData);
-        if (cartData.product) {
-          this.cartItems = cartData.product; // Convert the product to an array
+        console.log(response);
+        if (response.data.cart) {
+          this.cartItems = response.data.cart;
+          localStorage.setItem("cartId", cartId); // Convert the product to an array
         } else {
           this.cartItems = null; // If no product in the cart, set an empty array
         }
@@ -140,42 +139,63 @@ export default {
         console.error("API Error:", error);
       }
     },
+    calculateItemTotalPrice(item) {
+      return (item.product.price * item.quantity).toFixed(2);
+    },
     calculateOrderSummary() {
-      if (this.cartItems) {
-        this.orderSummary.subtotal = +this.cartItems.price;
-        this.orderSummary.shippingCharges = 100;
-        this.orderSummary.tax = this.cartItems.price * 0.05;
-        this.orderSummary.total =
-          this.orderSummary.subtotal +
-          this.orderSummary.shippingCharges +
-          this.orderSummary.tax;
-        console.log(this.orderSummary.total);
-        this.orderSummary.total = parseFloat(this.orderSummary.total).toFixed(
-          2
-        );
-        return;
-      }
+      if (this.cartItems && this.cartItems.length > 0) {
+        // Initialize order summary values
+        let subtotal = 0;
+        let shippingCharges = 100;
+        let tax = 0;
 
-      const cartItem = this.cartItems;
-      console.log("First Cart Item:", cartItem);
+        // Loop through each cart item in the cart array
+        for (const cartItem of this.cartItems) {
+          // Calculate subtotal for each item
+          const product = cartItem.product;
+          subtotal += +product.price * cartItem.quantity;
 
-      if (!cartItem.cart) {
-        console.log("Cart not available in the first item");
+          // You can add more logic here if needed
+        }
+
+        // Calculate tax based on the overall subtotal
+        tax = subtotal * 0.05;
+
+        // Calculate total including shipping charges
+        const total = subtotal + shippingCharges + tax;
+
+        // Update order summary values
+        this.orderSummary.subtotal = subtotal.toFixed(2);
+        this.orderSummary.shippingCharges = shippingCharges;
+        this.orderSummary.tax = tax.toFixed(2);
+        this.orderSummary.total = total.toFixed(2);
+      } else {
+        console.log("Cart not available or empty");
+        // Set default values for an empty cart
         this.orderSummary = {
           subtotal: "0.00",
           shippingCharges: 0,
           tax: "0.00",
           total: "0.00",
         };
-        return;
       }
     },
 
     removeCartItem(index) {
-      const itemId = this.cartItems.id;
-      console.log(itemId);
+      const cartItem = this.cartItems[index];
+
+      if (!cartItem || !cartItem.cart_id || !cartItem.product_id) {
+        console.error("Invalid cart item:", cartItem);
+        return;
+      }
+
+      const cartId = cartItem.cart_id;
+      const productId = cartItem.product_id;
+
       axios
-        .delete(`https://ecommerce.hyperzod.dev/api/cart/${itemId}`)
+        .delete(
+          `https://ecommerce.hyperzod.dev/api/cart/${cartId}/product/${productId}`
+        )
         .then(() => {
           this.cartItems.splice(index, 1);
           this.calculateOrderSummary();
@@ -191,26 +211,62 @@ export default {
         });
     },
 
+    isAuthenticated() {
+      // Check if the user is authenticated
+      // For example, check if there is a valid authentication token in local storage
+      return !!this.getAuthToken();
+    },
+
+    getAuthToken() {
+      // Retrieve the authentication token from local storage
+      return localStorage.getItem("authToken");
+    },
+
     async placeOrder() {
       try {
+        // Check if the user is authenticated
+        if (!this.isAuthenticated()) {
+          console.error("User not authenticated. Please log in.");
+           alert("Please log in to proceed with the order.");
+
+      // Redirect to the login page
+      this.$router.push("/login");
+          return;
+        }
+
         const response = await axios.post(
           "https://ecommerce.hyperzod.dev/api/user/place-order",
           {
             cartItems: this.cartItems,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${this.getAuthToken()}`, // Include the auth token in the request headers
+            },
           }
         );
 
-        const orderStatus = response.data.status;
-        console.log("Order Status:", orderStatus);
+        const orderData = response.data; // Update this line to get the order data directly
 
-        if (orderStatus === "success") {
-          // Order placed successfully, update the state
-          this.orderPlaced = true;
+        if (orderData) {
+          const order_id = orderData.order_id; // Retrieve the order ID
+          console.log("Order ID:", order_id);
 
-          // Redirect to view order page after a short delay
-          setTimeout(() => {
-            this.$router.push(`/view-order/${order_id}`);
-          }, 2000);
+          // Set the order ID in the component's data
+          this.orderId = order_id;
+
+          // Rest of your code...
+          if (orderData.status === "Pending") {
+            // Order placed successfully, update the state
+            this.orderPlaced = true;
+
+            // Fetch order details using the retrieved order ID
+
+            this.$router.push(`/view-order/${this.orderId}`);
+            // Rest of your code...
+          }
+        } else {
+          console.error("Order data not found in the response.");
         }
       } catch (error) {
         console.error("API Error:", error);

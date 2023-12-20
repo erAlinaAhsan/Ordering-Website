@@ -55,12 +55,13 @@ export default {
             quantity: 1,
           }
         );
-        const cartId = response.data.data.cart.id; // Extract cart ID from the response
+        console.log(response);
+        const cartId = response.data[0].data.id; // Extract cart ID from the response
         this.successMessage = "Product added to cart successfully!";
         setTimeout(() => {
           this.successMessage = null;
         }, 2000);
-        this.$router.push(`/cart/${cartId}`); // Redirect to the cart with the cart ID
+        this.$router.push(`/cart/${cartId}`);
       } catch (error) {
         console.error("API Error:", error);
       }

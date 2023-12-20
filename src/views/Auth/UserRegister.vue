@@ -152,7 +152,11 @@ export default {
       password: "",
     };
   },
+
+
   methods: {
+
+
     async handleSubmit() {
       try {
         const response = await axios.post(this.baseURL, {
@@ -175,7 +179,7 @@ export default {
       }
     },
     redirectToDashboard() {
-      this.$router.push("/").then(() => {
+      this.$router.push("/home").then(() => {
         this.showRegisterSuccessAlert();
       });
     },
@@ -192,6 +196,19 @@ export default {
         icon: "error",
       });
     },
+            isAuthenticated() {
+      // Implement your logic to check if the user is authenticated
+      // For example, check if there is a valid authentication token in local storage
+      return !!localStorage.getItem('authToken');
+    },
   },
+    mounted() {
+    // Check if the user is authenticated
+    if (this.isAuthenticated()) {
+      // Redirect to the login page
+      this.$router.push('/login');
+    }
+  },
+  
 };
 </script>
