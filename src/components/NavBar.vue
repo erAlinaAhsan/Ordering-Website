@@ -2,7 +2,12 @@
   <div>
     <div class="flex items-center bg-gray-800 p-4">
       <div class="flex items-center">
-        <h1 class="text-white font-semibold text-xl mr-4" @click="redirectToHome">Qart</h1>
+        <h1
+          class="text-white font-semibold text-xl mr-4"
+          @click="redirectToHome"
+        >
+          Qart
+        </h1>
         <button @click="redirectToCart">
           <img
             :src="require('@/assets/navcart.png')"
@@ -164,6 +169,8 @@ export default {
 
             // Clear the token from local storage or any other cleanup steps
             localStorage.removeItem("authToken");
+            localStorage.removeItem("cartId");
+            localStorage.removeItem("user_id");
 
             // Redirect to the login page
             this.$router.push("/login");
@@ -174,8 +181,8 @@ export default {
       }
     },
     redirectToHome() {
-      this.$router.push("/home")
-    }
+      this.$router.push("/home");
+    },
   },
   mounted() {
     this.fetchAllProducts();
