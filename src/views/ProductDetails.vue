@@ -1,12 +1,8 @@
 <template>
   <div class="flex justify-center mt-8">
     <div class="w-full md:w-8/12 lg:w-6/12">
-      <div class="hover:shadow-xl transition duration-300 ease-in-out">
-        <img
-          v-if="product.image"
-          :src="product.image"
-          class="w-full h-64 object-cover"
-        />
+      <div>
+        <img v-if="product.image" :src="product.image" class="product-image" />
 
         <div class="p-4 bg-white">
           <h1 class="text-lg font-semibold">{{ product.name }}</h1>
@@ -46,22 +42,67 @@ export default {
     };
   },
   methods: {
+    getCartId() {
+      return localStorage.getItem("cartId");
+    },
+    setCartId(id) {
+      localStorage.setItem("id", id);
+    },
+
+    getAuthToken() {
+      return localStorage.getItem("authToken");
+    },
+
+    getUserId() {
+      let user_id = localStorage.getItem("user_id");
+      return user_id;
+    },
+
+    isAuthenticated() {
+      return !!this.getAuthToken();
+    },
+
     async addToCart(product) {
       try {
+        let id = this.getCartId();
+        const authToken = this.getAuthToken();
+
+        let requestData = {
+          product_id: product.id,
+          quantity: 1,
+          user_id: null,
+        };
+        if (id) {
+          requestData.cart_id = +id;
+        }
+        // Include user_id in the request if authenticated
+        if (this.isAuthenticated() && this.getUserId()) {
+          requestData.user_id = this.getUserId();
+        }
+
         const response = await axios.post(
           "https://ecommerce.hyperzod.dev/api/cart/add",
+          requestData,
           {
-            product_id: product.id,
-            quantity: 1,
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+            },
           }
         );
+
         console.log(response);
-        const cartId = response.data[0].data.id; // Extract cart ID from the response
+
+        const cartData = response.data[0].data; // Extract cart data from the response
+        const cartId = cartData.id;
+        // Update the local storage with the new Cart ID
+        localStorage.setItem("cartId", cartId);
+
         this.successMessage = "Product added to cart successfully!";
+
         setTimeout(() => {
           this.successMessage = null;
+          this.$router.push(`/cart/${cartId}`);
         }, 2000);
-        this.$router.push(`/cart/${cartId}`);
       } catch (error) {
         console.error("API Error:", error);
       }

@@ -128,9 +128,8 @@ export default {
           `https://ecommerce.hyperzod.dev/api/cart/${cartId}`
         );
         console.log(response);
-        if (response.data.cart) {
-          this.cartItems = response.data.cart;
-          localStorage.setItem("cartId", cartId); // Convert the product to an array
+        if (response.status == 200) {
+          this.cartItems = response.data[0].data;
         } else {
           this.cartItems = null; // If no product in the cart, set an empty array
         }
@@ -182,24 +181,32 @@ export default {
     },
 
     removeCartItem(index) {
+      console.log("Clicked");
+      console.log(index);
       const cartItem = this.cartItems[index];
+      console.log(cartItem);
+      console.log(cartItem.cart_id);
+      console.log(cartItem.product_id);
 
-      if (!cartItem || !cartItem.cart_id || !cartItem.product_id) {
+      if (!cartItem || !cartItem.product_id) {
         console.error("Invalid cart item:", cartItem);
         return;
       }
 
-      const cartId = cartItem.cart_id;
+      const cartId = this.cartId;
       const productId = cartItem.product_id;
+      const requestData = {
+        product_id: productId,
+        cart_id: cartId,
+      };
 
       axios
-        .delete(
-          `https://ecommerce.hyperzod.dev/api/cart/${cartId}/product/${productId}`
-        )
+        .delete("https://ecommerce.hyperzod.dev/api/cart", {
+          data: requestData,
+        })
         .then(() => {
           this.cartItems.splice(index, 1);
           this.calculateOrderSummary();
-          // this.$router.push(`/cart/${this.cartId}`);
         })
         .catch((error) => {
           if (error.response && error.response.status === 404) {
@@ -221,23 +228,28 @@ export default {
       // Retrieve the authentication token from local storage
       return localStorage.getItem("authToken");
     },
+    getUserId() {
+      let user_id = localStorage.getItem("user_id");
+      return user_id;
+    },
 
     async placeOrder() {
       try {
         // Check if the user is authenticated
         if (!this.isAuthenticated()) {
           console.error("User not authenticated. Please log in.");
-           alert("Please log in to proceed with the order.");
+          alert("Please log in to proceed with the order.");
 
-      // Redirect to the login page
-      this.$router.push("/login");
+          // Redirect to the login page
+          this.$router.push("/login");
           return;
         }
-
+        const user_id = this.getUserId();
         const response = await axios.post(
           "https://ecommerce.hyperzod.dev/api/user/place-order",
           {
             cartItems: this.cartItems,
+            user_id: user_id,
           },
           {
             headers: {
@@ -258,7 +270,9 @@ export default {
           // Rest of your code...
           if (orderData.status === "Pending") {
             // Order placed successfully, update the state
-            this.orderPlaced = true;
+
+            this.successMessage =
+              "Order placed successfully! Redirecting to view order page...";
 
             // Fetch order details using the retrieved order ID
 

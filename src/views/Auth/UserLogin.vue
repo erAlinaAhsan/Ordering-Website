@@ -140,9 +140,14 @@ export default {
         });
 
         const token = response.data.token;
+        const user = response.data.user;
 
         if (token) {
           localStorage.setItem("authToken", token);
+          console.log(user);
+          if (user && user.id) {
+            localStorage.setItem("user_id", user.id);
+          }
           this.redirectToDashboard();
         } else {
           this.showLoginErrorAlert();

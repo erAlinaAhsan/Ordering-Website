@@ -31,21 +31,26 @@ export default {
   computed: {
     orderList() {
       // Transform the raw order list to the expected format
-      return this.rawOrderList.map((order) => ({
-        id: order.id || "",
-        total_price: order.total_price || "",
-        status: order.status || "",
-        payment_status: order.payment_status || "",
-        delivery_address: order.delivery_address || "",
-        delivery_method: order.delivery_method || "",
-        created_at: order.created_at || "",
-        items: (order.cart || []).map((cartItem) => ({
-          product_id: cartItem.product_id || "",
-          quantity: cartItem.quantity || 0,
-          product: cartItem.product || {},
-          // Add more details as needed
-        })),
-      }));
+      if(this.rawOrderList && this.rawOrderList.length>0){
+        return this.rawOrderList.map((order) => ({
+          id: order.id || "",
+          total_price: order.total_price || "",
+          status: order.status || "",
+          payment_status: order.payment_status || "",
+          delivery_address: order.delivery_address || "",
+          delivery_method: order.delivery_method || "",
+          created_at: order.created_at || "",
+          items: (order.cart || []).map((cartItem) => ({
+            product_id: cartItem.product_id || "",
+            quantity: cartItem.quantity || 0,
+            product: cartItem.product || {},
+            // Add more details as needed
+          })),
+        }));
+      }
+      else{
+        return [];
+      }
     },
   },
   methods: {
@@ -62,7 +67,7 @@ export default {
         });
 
         // Assign the raw order list directly
-        this.rawOrderList = response.data || [];
+        this.rawOrderList = response.data.data || [];
       } catch (error) {
         console.error("API Error:", error);
       }
