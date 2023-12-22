@@ -6,7 +6,7 @@
 
         <div class="p-4 bg-white">
           <h1 class="text-lg font-semibold">{{ product.name }}</h1>
-          <p class="text-md text-gray-600">{{ product.price }}</p>
+          <p class="text-md text-gray-600">&#8377;{{ product.price }}</p>
           <p class="text-md text-gray-600">{{ product.description }}</p>
 
           <div class="flex mt-4">
@@ -78,6 +78,14 @@ export default {
         // Include user_id in the request if authenticated
         if (this.isAuthenticated() && this.getUserId()) {
           requestData.user_id = this.getUserId();
+        } else {
+          requestData.user_id = null;
+          console.error("User not authenticated. Please log in.");
+          alert("Please log in to proceed with adding to cart.");
+
+          // Redirect to the login page
+          this.$router.push("/login");
+          return;
         }
 
         const response = await axios.post(

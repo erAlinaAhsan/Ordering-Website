@@ -35,10 +35,7 @@
 
       <div class="ml-auto">
         <button class="rounded-full" @click="redirectToCart">
-          <img
-            :src="require('@/assets/navcart.png')"
-            class="w-9 h-9 rounded-full"
-          />
+          <img :src="require('@/assets/n.png')" class="w-9 h-9 rounded-full" />
         </button>
         <button class="rounded-full ml-3" @click="redirectToAllOrders">
           <img
@@ -124,15 +121,25 @@ export default {
     },
 
     redirectToCart() {
-      // Try to retrieve cartId from local storage
-      const storedCartId = localStorage.getItem("cartId");
+      const token = localStorage.getItem("authToken");
 
-      if (storedCartId) {
-        // If cartId is stored, redirect to the cart route with that ID
-        this.$router.push(`/cart/${storedCartId}`);
+      if (token) {
+        // Try to retrieve cartId from local storage
+        const storedCartId = localStorage.getItem("cartId");
+
+        if (storedCartId) {
+          // If cartId is stored, redirect to the cart route with that ID
+          this.$router.push(`/cart/${storedCartId}`);
+        } else {
+          // If no cartId in local storage, display an error or handle as needed
+          console.error("Cart ID not found in local storage");
+        }
       } else {
-        // If no cartId in local storage, display an error or handle as needed
-        console.error("Cart ID not found in local storage");
+        console.error("User not authenticated. Please log in.");
+        alert("Please log in to proceed with adding to cart.");
+
+        // Redirect to the login page
+        this.$router.push("/login");
       }
     },
     redirectToSignUp() {

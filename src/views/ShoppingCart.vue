@@ -8,11 +8,11 @@
         <table class="w-full">
           <thead>
             <tr>
-              <th class="text-center">ITEM</th>
-              <th class="text-center">PRICE</th>
-              <th class="text-center">QUANTITY</th>
-              <th class="text-center">TOTAL</th>
-              <th class="text-center">ACTION</th>
+              <th class="text-left">ITEMS</th>
+              <th class="text-left">PRICE</th>
+              <th class="text-left">QUANTITY</th>
+              <th class="text-left">TOTAL</th>
+              <th class="text-left">ACTION</th>
             </tr>
           </thead>
           <tbody>
@@ -29,12 +29,14 @@
                   </div>
                 </div>
               </td>
-              <td>{{ item.product.price }}</td>
+              <td>&#8377;{{ item.product.price }}</td>
               <td>
                 <p class="font-bold">{{ item.quantity }}</p>
               </td>
               <td>
-                <p class="font-bold">{{ calculateItemTotalPrice(item) }}</p>
+                <p class="font-bold">
+                  &#8377;{{ calculateItemTotalPrice(item) }}
+                </p>
               </td>
               <td>
                 <a @click="removeCartItem(index)">X</a>
@@ -55,19 +57,23 @@
           <tbody>
             <tr>
               <td>Order Subtotal</td>
-              <td class="text-right">{{ orderSummary.subtotal }}</td>
+              <td class="text-right">&#8377;{{ orderSummary.subtotal }}</td>
             </tr>
             <tr>
               <td>Shipping Charges</td>
-              <td class="text-right">{{ orderSummary.shippingCharges }}</td>
+              <td class="text-right">
+                &#8377;{{ orderSummary.shippingCharges }}
+              </td>
             </tr>
             <tr>
               <td>Tax</td>
-              <td class="text-right">{{ orderSummary.tax }}</td>
+              <td class="text-right">&#8377;{{ orderSummary.tax }}</td>
             </tr>
             <tr>
               <td>Total</td>
-              <td class="text-right font-bold">{{ orderSummary.total }}</td>
+              <td class="text-right font-bold">
+                &#8377;{{ orderSummary.total }}
+              </td>
             </tr>
           </tbody>
         </table>
@@ -94,8 +100,8 @@
           <i class="mdi mdi-truck text-4xl"></i>
         </div>
         <div class="ml-4">
-          <h3 class="font-light">FREE SHIPPING & RETURN</h3>
-          <p class="font-thin">Free Shipping over $300</p>
+          <h3 class="font-light">SHIPPING & TAX INCLUDED</h3>
+          <p class="font-thin">Free gift above &#8377;5000 shopping</p>
         </div>
       </div>
     </div>

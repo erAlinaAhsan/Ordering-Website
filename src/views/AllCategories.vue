@@ -51,7 +51,7 @@
             @click="loadProductsByCategory(3)"
           >
             <img
-              :src="require('@/assets/banner-bags.jpg')"
+              :src="require('@/assets/bannner-bags.jpeg')"
               alt="Product Image"
               class="w-1/2 h-64 object-cover"
             />

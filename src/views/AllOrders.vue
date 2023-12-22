@@ -5,7 +5,7 @@
     <!-- Display order details here -->
     <div v-for="order in orderList" :key="order.id">
       <p>Order ID: {{ order.id }}</p>
-      <p>Total Price: {{ order.total_price }}</p>
+      <p>Total Price: &#8377;{{ order.total_price }}</p>
       <p>Status: {{ order.status }}</p>
       <p>Payment Status: {{ order.payment_status }}</p>
       <p>Delivery Address: {{ order.delivery_address }}</p>
