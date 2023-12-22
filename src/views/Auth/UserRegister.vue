@@ -1,7 +1,7 @@
 <template>
   <div class="w-full h-screen">
     <div class="bg-white w-full">
-      <form @submit.prevent="handleSubmit">
+      <form @submit.prevent="handleSubmit" @keyup.enter="handleSubmit">
         <div
           class="form-body max-w-xl mx-auto lg:p-20 p-8 lg:mt-10 mt-5 space-y-8"
         >
@@ -12,26 +12,29 @@
             <h2 class="font-semibold text-gray-800 text-4xl">
               Create new account?
             </h2>
+
             <p class="text-gray-700">
               Please enter your information to register account.
             </p>
           </div>
-          <button
+
+          <!-- <button
             type="button"
             class="text-gray-700 flex justify-center gap-2 bg-gray-300 hover:bg-gray-100/50 p-2 w-full rounded-md"
-          >
-            <!-- <img
+          > -->
+          <!-- <img
                 class="w-8"
                 src="../../../assets/logo/google-logo.svg"
                 alt=""
               /> -->
-            <a href="#" class="mt-1 text-gray-700"> Sign up with Google </a>
-          </button>
-          <span class="flex items-center justify-center space-x-2">
-            <span class="h-px dark:bg-gray-600 bg-gray-200 w-full"></span>
-            <span class="font-normal text-gray-500">or </span>
-            <span class="h-px dark:bg-gray-600 bg-gray-200 w-full"></span>
-          </span>
+          <!-- <a href="#" class="mt-1 text-gray-700"> Sign up with Google </a>
+          </button> -->
+          <!-- <span class="flex items-center justify-center space-x-2"> -->
+          <!-- <span class="h-px dark:bg-gray-600 bg-gray-200 w-full"></span> -->
+          <!-- <span class="font-normal text-gray-500">or </span> -->
+
+          <span class="h-px dark:bg-gray-600 bg-gray-200 w-full"></span>
+          <!-- </span> -->
           <div class="space-y-5">
             <div class="relative z-0 w-full mb-6 group">
               <input
@@ -126,7 +129,7 @@
           <p class="dark:text-white text-center text-gray-700">
             Already have an account?<button
               type="button"
-              @click="$router.push('/auth/login')"
+              @click="$router.push('/login')"
               class="ml-2 text-primary"
             >
               Login here
@@ -153,10 +156,7 @@ export default {
     };
   },
 
-
   methods: {
-
-
     async handleSubmit() {
       try {
         const response = await axios.post(this.baseURL, {
@@ -196,19 +196,18 @@ export default {
         icon: "error",
       });
     },
-            isAuthenticated() {
+    isAuthenticated() {
       // Implement your logic to check if the user is authenticated
       // For example, check if there is a valid authentication token in local storage
-      return !!localStorage.getItem('authToken');
+      return !!localStorage.getItem("authToken");
     },
   },
-    mounted() {
+  mounted() {
     // Check if the user is authenticated
     if (this.isAuthenticated()) {
       // Redirect to the login page
-      this.$router.push('/login');
+      this.$router.push("/login");
     }
   },
-  
 };
 </script>

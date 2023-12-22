@@ -2,7 +2,7 @@
   <div class="w-full h-screen">
     <div class="flex shadow rounded-md h-screen">
       <div class="bg-white w-full">
-        <form @submit.prevent="handleSubmit">
+        <form @submit.prevent="handleSubmit" @keyup.enter="handleSubmit">
           <div
             class="form-body lg:max-w-xl mx-auto lg:p-20 p-8 lg:mt-20 mt-5 space-y-8"
           >
@@ -14,25 +14,25 @@
               <h2
                 class="dark:text-white mb-8 font-semibold text-gray-800 flex justify-center gap-2 text-4xl"
               >
-                Cart it!
+                Qart
               </h2>
               <p class="dark:text-gray-400 text-gray-700">
                 Please enter your account to continue.
               </p>
             </div>
-            <button
+            <!-- <button
               type="button"
               class="dark:text-white text-gray-700 flex justify-center gap-2 dark:bg-gray-700 bg-gray-100 hover:bg-gray-100/50 p-2 w-full rounded-md"
-            >
-              <!-- <img
+            > -->
+            <!-- <img
                 class="w-8"
                 src="../../../assets/logo/google-logo.svg"
                 alt=""
               /> -->
-              <p class="mt-1 dark:text-white text-gray-700">
+            <!-- <p class="mt-1 dark:text-white text-gray-700">
                 Sign in with Google
-              </p>
-            </button>
+              </p> -->
+            <!-- </button> -->
             <span class="flex items-center justify-center space-x-2">
               <span class="h-px dark:bg-gray-600 bg-gray-200 w-full"></span>
               <span class="font-normal text-gray-500">or </span>
@@ -89,12 +89,6 @@
                   >Remember me</label
                 >
               </div>
-              <button
-                @click="$router.push('/auth/forgot-password')"
-                class="text-sm dark:text-white hover:text-primary text-gray-700"
-              >
-                Forgot password?
-              </button>
             </div>
 
             <button
@@ -106,7 +100,7 @@
               Don't have an account?
               <button
                 type="button"
-                @click="$router.push('/auth/register')"
+                @click="$router.push('/register')"
                 class="ml-2 text-primary"
               >
                 Register here
