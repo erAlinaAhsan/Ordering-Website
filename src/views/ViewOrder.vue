@@ -1,18 +1,29 @@
 <template>
   <div class="container mx-auto p-4">
-    <h1 class="text-3xl font-light text-center py-4">VIEW ORDER</h1>
+    <h1 class="text-3xl font-medium text-center py-4">VIEW ORDER</h1>
 
-    <!-- Display order details here -->
+    <h2 class="text-2xl font-medium text-left py-4">YOUR ORDER</h2>
     <div v-if="order">
-      <p>Order ID: {{ order.id }}</p>
-      <p>Total Price: {{ order.total_price }}</p>
-      <p>Status: {{ order.status }}</p>
-      <p>Payment Status: {{ order.payment_status }}</p>
-      <p>Delivery Address: {{ order.delivery_address }}</p>
-      <p>Delivery Method: {{ order.delivery_method }}</p>
-      <p>Created At: {{ order.created_at }}</p>
+      <p>Order ID: {{ order[0].id }}</p>
+      <p>Total Price: {{ order[0].total_price }}</p>
+      <p>Status: {{ order[0].status }}</p>
+      <p>Payment Status: {{ order[0].payment_status }}</p>
+      <p>Delivery Address: {{ order[0].delivery_address }}</p>
+      <p>Delivery Method: {{ order[0].delivery_method }}</p>
+      <p>Created At: {{ order[0].created_at }}</p>
+      <br />
 
-      <hr class="my-4" />
+      <h2 class="text-2xl font-medium text-left py-4">
+        YOUR ORDERED PRODUCT DETAILS
+      </h2>
+
+      <div v-for="(product, index) in productArray" :key="index">
+        <hr class="my-2" />
+        <p>Product ID: {{ product.product_id }}</p>
+        <p>Quantity: {{ product.quantity }}</p>
+        <p>Product Name: {{ product.product.name }}</p>
+        <p>Product Price: {{ product.product.price }}</p>
+      </div>
     </div>
   </div>
 </template>
@@ -40,9 +51,10 @@ export default {
             Authorization: `Bearer ${authToken}`,
           },
         });
-
+        console.log("Order Response:", response.data);
         // Assign the order directly
         this.order = response.data.data[0] || null;
+        this.productArray = response.data.data[1] || null;
       } catch (error) {
         console.error("API Error:", error);
       }

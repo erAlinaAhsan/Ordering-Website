@@ -230,7 +230,12 @@ export default {
     },
     getUserId() {
       let user_id = localStorage.getItem("user_id");
-      return user_id;
+      return +user_id;
+    },
+
+    getCartId() {
+      let cartId = localStorage.getItem("cartId");
+      return cartId;
     },
 
     async placeOrder() {
@@ -245,11 +250,13 @@ export default {
           return;
         }
         const user_id = this.getUserId();
+        const cartId = this.getCartId();
         const response = await axios.post(
           "https://ecommerce.hyperzod.dev/api/user/place-order",
           {
             cartItems: this.cartItems,
             user_id: user_id,
+            cart_id: cartId,
           },
           {
             headers: {
@@ -258,17 +265,18 @@ export default {
           }
         );
 
-        const orderData = response.data; // Update this line to get the order data directly
-
+        const orderData = response.data[0]; // Update this line to get the order data directly
+        console.log("Order Data:", orderData);
         if (orderData) {
-          const order_id = orderData.order_id; // Retrieve the order ID
+          const order_id = orderData.data.order_id; // Retrieve the order ID
           console.log("Order ID:", order_id);
 
           // Set the order ID in the component's data
-          this.orderId = order_id;
+          this.orderId = +order_id;
 
           // Rest of your code...
-          if (orderData.status === "Pending") {
+          if (orderData.status === true) {
+            console.log(orderData.status);
             // Order placed successfully, update the state
 
             this.successMessage =

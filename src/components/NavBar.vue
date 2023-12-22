@@ -8,13 +8,6 @@
         >
           Qart
         </h1>
-        <button @click="redirectToCart">
-          <img
-            :src="require('@/assets/navcart.png')"
-            alt="Cart"
-            class="w-12 h-10"
-          />
-        </button>
       </div>
 
       <div class="my-auto mt-1 ml-auto relative">
@@ -41,30 +34,38 @@
       </div>
 
       <div class="ml-auto">
-        <!-- Dropdown Button -->
-        <div class="relative" @click="toggleDropdown">
-          <button class="mt-2 bg-gray-200 text-gray-800 px-4 py-2 rounded">
-            Account
-          </button>
-          <ul
-            v-show="dropdownOpen"
-            class="absolute bg-white border rounded mt-2 w-40"
-          >
-            <li @click="redirectToSignUp" class="p-2 cursor-pointer">SignUp</li>
-            <li @click="redirectToLogin" class="p-2 cursor-pointer">Login</li>
-            <li @click="redirectToLogout" class="p-2 cursor-pointer">Logout</li>
-            <li @click="redirectToAllOrders" class="p-2 cursor-pointer">
-              Orders
-            </li>
-          </ul>
-        </div>
+        <button class="rounded-full" @click="redirectToCart">
+          <img
+            :src="require('@/assets/navcart.png')"
+            class="w-9 h-9 rounded-full"
+          />
+        </button>
+        <button class="rounded-full ml-3" @click="redirectToAllOrders">
+          <img
+            :src="require('@/assets/cartss.png')"
+            class="w-9 h-9 rounded-full"
+          />
+        </button>
+        <!-- <li @click="redirectToLogin" class="p-2 cursor-pointer">Login</li> -->
+        <button class="rounded-full ml-3" @click="redirectToSignUp">
+          <img
+            :src="require('@/assets/sign.png')"
+            class="w-9 h-9 rounded-full"
+          />
+        </button>
+        <button class="rounded-full ml-3" @click="redirectToLogout">
+          <img
+            :src="require('@/assets/log.png')"
+            class="w-9 h-9 rounded-full"
+          />
+        </button>
       </div>
     </div>
+  </div>
 
-    <div class="p-4">
-      <!-- Display router view for other content -->
-      <router-view />
-    </div>
+  <div class="p-4">
+    <!-- Display router view for other content -->
+    <router-view />
   </div>
 </template>
 
@@ -138,16 +139,12 @@ export default {
       this.$router.push("/register");
     },
 
-    redirectToLogin() {
-      this.$router.push("/login");
-    },
+    // redirectToLogin() {
+    //   this.$router.push("/login");
+    // },
 
     redirectToAllOrders() {
       this.$router.push("/all-orders");
-    },
-
-    toggleDropdown() {
-      this.dropdownOpen = !this.dropdownOpen;
     },
 
     async redirectToLogout() {

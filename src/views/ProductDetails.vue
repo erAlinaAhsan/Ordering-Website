@@ -16,7 +16,7 @@
             >
               ADD TO CART
             </button>
-            <div v-if="successMessage" class="text-green-500">
+            <div v-if="successMessage" class="text-red-600">
               {{ successMessage }}
             </div>
           </div>
@@ -55,7 +55,7 @@ export default {
 
     getUserId() {
       let user_id = localStorage.getItem("user_id");
-      return user_id;
+      return +user_id;
     },
 
     isAuthenticated() {
@@ -97,11 +97,10 @@ export default {
         // Update the local storage with the new Cart ID
         localStorage.setItem("cartId", cartId);
 
-        this.successMessage = "Product added to cart successfully!";
+        this.successMessage = "Added to cart!";
 
         setTimeout(() => {
           this.successMessage = null;
-          this.$router.push(`/cart/${cartId}`);
         }, 2000);
       } catch (error) {
         console.error("API Error:", error);

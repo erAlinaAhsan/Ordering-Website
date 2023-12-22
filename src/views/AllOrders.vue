@@ -1,6 +1,6 @@
 <template>
   <div class="container mx-auto p-4">
-    <h1 class="text-3xl font-light text-center py-4">VIEW MY ALL ORDERS</h1>
+    <h1 class="text-3xl font-medium text-center py-4">VIEW ALL ORDERS</h1>
 
     <!-- Display order details here -->
     <div v-for="order in orderList" :key="order.id">
@@ -31,7 +31,7 @@ export default {
   computed: {
     orderList() {
       // Transform the raw order list to the expected format
-      if(this.rawOrderList && this.rawOrderList.length>0){
+      if (this.rawOrderList && this.rawOrderList.length > 0) {
         return this.rawOrderList.map((order) => ({
           id: order.id || "",
           total_price: order.total_price || "",
@@ -47,8 +47,7 @@ export default {
             // Add more details as needed
           })),
         }));
-      }
-      else{
+      } else {
         return [];
       }
     },
@@ -67,7 +66,7 @@ export default {
         });
 
         // Assign the raw order list directly
-        this.rawOrderList = response.data.data || [];
+        this.rawOrderList = response.data.data[0] || [];
       } catch (error) {
         console.error("API Error:", error);
       }
@@ -78,7 +77,7 @@ export default {
       return localStorage.getItem("authToken");
     },
   },
-  mounted() {
+  created() {
     this.fetchOrderList();
   },
 };
