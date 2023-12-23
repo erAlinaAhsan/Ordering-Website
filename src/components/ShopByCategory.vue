@@ -70,7 +70,7 @@ export default {
 nav.flex-div1 {
   display: flex;
   /* flex-wrap: wrap; */
-  
+
   align-items: center;
 
   /* position: absolute; */
@@ -85,8 +85,6 @@ nav.flex-div1 {
   width: 8px;
   height: 5px;
 }
-
-
 
 ::-webkit-scrollbar-track {
   background-color: #fff; /* Track color */
@@ -105,6 +103,19 @@ h4:hover {
   background-color: rgb(112, 113, 122);
   cursor: pointer;
   /* color: black; */
+}
+
+@media (max-width: 768px) {
+  nav.flex-div1 {
+    flex-direction: column; /* Change the flex direction to column for small screens */
+    justify-content: center;
+    align-items: flex-start;
+  }
+  nav.flex-div1 h4,
+  nav.flex-div1 button {
+    width: 100%;
+    box-sizing: border-box;
+  }
 }
 
 /* .flex-div1 button:hover {

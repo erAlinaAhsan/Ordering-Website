@@ -119,4 +119,9 @@ export default {
 .add-to-cart-btn:hover {
   background-color: #2779bd;
 }
+@media (max-width: 768px) {
+  .product-container {
+    grid-template-columns: 1fr;
+  }
+}
 </style>

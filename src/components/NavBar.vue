@@ -3,7 +3,7 @@
     <div class="flex items-center bg-gray-800 p-4">
       <div class="flex items-center">
         <h1
-          class="text-white font-semibold text-xl mr-4"
+          class="text-white font-semibold text-xl mr-4 hidden md:block"
           @click="redirectToHome"
         >
           Qart
@@ -47,7 +47,7 @@
         <button class="rounded-full ml-3" @click="redirectToSignUp">
           <img
             :src="require('@/assets/sign.png')"
-            class="w-9 h-9 rounded-full"
+            class="w-9 h-9 rounded-full hidden md:block"
           />
         </button>
         <button class="rounded-full ml-3" @click="redirectToLogout">

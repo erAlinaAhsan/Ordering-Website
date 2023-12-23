@@ -1,50 +1,57 @@
 <template>
   <div class="container mx-auto p-4">
-    <h1 class="text-3xl font-light text-center py-4">SHOPPING CART</h1>
+    <h1 class="text-3xl font-medium text-center py-4">SHOPPING CART</h1>
 
     <!-- Cart Items -->
     <div class="flex flex-wrap -mx-2">
       <div class="w-full md:w-9/12 p-2">
-        <table class="w-full">
-          <thead>
-            <tr>
-              <th class="text-left">ITEMS</th>
-              <th class="text-left">PRICE</th>
-              <th class="text-left">QUANTITY</th>
-              <th class="text-left">TOTAL</th>
-              <th class="text-left">ACTION</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(item, index) in cartItems" :key="index">
-              <td>
-                <div class="flex items-center">
-                  <img
-                    :src="item.product.image"
-                    alt="Product Image"
-                    class="w-16 h-16 object-cover rounded mr-2"
-                  />
-                  <div>
-                    <p class="font-bold">{{ item.product.name }}</p>
+        <div class="overflow-x-auto">
+          <table class="w-full table-auto">
+            <thead>
+              <tr>
+                <th class="hidden md:table-cell text-left">ITEMS</th>
+                <th class="hidden md:table-cell text-left">PRICE</th>
+                <th class="hidden md:table-cell text-left">QUANTITY</th>
+                <th class="hidden md:table-cell text-left">TOTAL</th>
+                <th class="hidden md:table-cell text-left">ACTION</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(item, index) in cartItems" :key="index">
+                <td>
+                  <div class="flex items-left flex-col md:flex-row">
+                    <img
+                      :src="item.product.image"
+                      alt="Product Image"
+                      class="w-16 h-16 object-cover rounded mb-2 md:mb-0 md:mr-2"
+                    />
+                    <div>
+                      <p class="font-bold">{{ item.product.name }}</p>
+                    </div>
                   </div>
-                </div>
-              </td>
-              <td>&#8377;{{ item.product.price }}</td>
-              <td>
-                <p class="font-bold">{{ item.quantity }}</p>
-              </td>
-              <td>
-                <p class="font-bold">
-                  &#8377;{{ calculateItemTotalPrice(item) }}
-                </p>
-              </td>
-              <td>
-                <a @click="removeCartItem(index)">X</a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                </td>
+                <td class="hidden md:table-cell">
+                  &#8377;{{ item.product.price }}
+                </td>
+                <td>
+                  <p class="hidden md:table-cell font-bold">
+                    {{ item.quantity }}
+                  </p>
+                </td>
+                <td>
+                  <p class="font-bold">
+                    &#8377;{{ calculateItemTotalPrice(item) }}
+                  </p>
+                </td>
+                <td>
+                  <a @click="removeCartItem(index)">X</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
+
       <!-- Order Summary -->
       <div class="w-full md:w-3/12 p-2 bg-gray-200">
         <p class="text-xl font-bold">Order Summary</p>
@@ -95,7 +102,7 @@
 
     <!-- Additional Information -->
     <div class="card bg-blue-400 p-4 mt-4">
-      <div class="flex items-center">
+      <div class="flex items-left">
         <div class="flex-shrink-0">
           <i class="mdi mdi-truck text-4xl"></i>
         </div>
