@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex items-center bg-gray-800 p-4">
+    <div class="flex items-center bg-black p-4">
       <div class="flex items-center">
         <h1
           class="text-white font-semibold text-xl mr-4 hidden md:block"
@@ -35,7 +35,10 @@
 
       <div class="ml-auto">
         <button class="rounded-full" @click="redirectToCart">
-          <img :src="require('@/assets/n.png')" class="w-9 h-9 rounded-full" />
+          <img
+            :src="require('@/assets/carttt.png')"
+            class="w-9 h-9 rounded-full"
+          />
         </button>
         <button class="rounded-full ml-3" @click="redirectToAllOrders">
           <img

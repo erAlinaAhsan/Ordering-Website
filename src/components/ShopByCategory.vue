@@ -1,23 +1,34 @@
 <template>
-  <div class="category-section">
-    <nav class="flex-div1">
-      <button
-        class="mt-1 bg-gray-200 text-gray-800 px-4 py-2 rounded"
-        @click="redirectToAllProducts"
-      >
-        Browse Products
-      </button>
-      <h4
-        class="mt-1 bg-gray-200 text-gray-800 px-4 py-2 rounded"
-        v-for="category in categories"
-        :key="category.id"
-        @click="loadProductsByCategory(category.id)"
-      >
-        {{ category.name }}
-      </h4>
-    </nav>
+  <div class="home-view">
+    <template v-if="loading">
+      <!-- Loading skeleton covering the entire home view -->
+      <div class="skeleton-loader-container">
+        <div class="skeleton-rectangular-box" v-for="n in 10" :key="n"></div>
+      </div>
+    </template>
+
+    <template v-else>
+      <!-- Actual content when not loading -->
+      <nav class="flex-div1">
+        <button
+          class="mt-1 bg-gray-200 text-gray-800 px-4 py-2 rounded"
+          @click="redirectToAllProducts"
+        >
+          Browse Products
+        </button>
+        <h4
+          class="mt-1 bg-gray-200 text-gray-800 px-4 py-2 rounded"
+          v-for="category in categories"
+          :key="category.id"
+          @click="loadProductsByCategory(category.id)"
+        >
+          {{ category.name }}
+        </h4>
+      </nav>
+    </template>
   </div>
 </template>
+
 
 <script>
 import axios from "axios";
@@ -26,6 +37,7 @@ export default {
   data() {
     return {
       categories: [],
+      loading: true,
     };
   },
   methods: {
@@ -37,6 +49,8 @@ export default {
         this.categories = response.data.data;
       } catch (error) {
         console.error("API Error:", error);
+      } finally {
+        this.loading = false;
       }
     },
     redirectToAllProducts() {
@@ -121,4 +135,18 @@ h4:hover {
 /* .flex-div1 button:hover {
   background-color: #f0f0f0;
 } */
+
+.skeleton-loader-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.skeleton-rectangular-box {
+  width: 100px;
+  height: 50px;
+  background-color: #ccc;
+  margin: 10px;
+  border-radius: 8px;
+}
 </style>

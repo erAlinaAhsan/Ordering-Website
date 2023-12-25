@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto p-4">
+  <div v-if="!loading" class="container mx-auto p-4">
     <h1 class="text-3xl font-medium text-center py-4">VIEW ALL ORDERS</h1>
 
     <!-- Display order details here -->
@@ -17,6 +17,10 @@
       <hr class="my-4" />
     </div>
   </div>
+  <div v-else class="skeleton-loader-banner">
+    <!-- You can customize the skeleton loader elements and styles -->
+    <div class="skeleton-box" v-for="n in 1" :key="n"></div>
+  </div>
 </template>
 
 <script>
@@ -25,6 +29,7 @@ import axios from "axios";
 export default {
   data() {
     return {
+      loading: true,
       rawOrderList: [], // Use an array for the raw order list
     };
   },
@@ -77,6 +82,11 @@ export default {
       return localStorage.getItem("authToken");
     },
   },
+  mounted() {
+    setTimeout(() => {
+      this.loading = false;
+    }, 1000);
+  },
   created() {
     this.fetchOrderList();
   },
@@ -84,5 +94,18 @@ export default {
 </script>
 
 <style scoped>
+.skeleton-loader-banner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.skeleton-box {
+  width: 1400px;
+  height: 500px;
+  background-color: #ccc;
+  margin: 10px;
+  border-radius: 8px;
+}
 /* Add any custom styles here */
 </style>

@@ -1,10 +1,13 @@
 <template>
   <div>
     <div
+      v-if="!loading"
       class="parallax-slider-navigation"
       style="display: flex; justify-content: space-between; padding: 1rem"
     ></div>
+
     <swiper
+      v-if="!loading"
       class="parallax-slider"
       parallax
       grabCursor
@@ -17,6 +20,10 @@
       </swiper-slide>
       ...
     </swiper>
+    <div v-else class="skeleton-loader-banner">
+      <!-- You can customize the skeleton loader elements and styles -->
+      <div class="skeleton-box" v-for="n in 1" :key="n"></div>
+    </div>
     <ShopByCategory></ShopByCategory>
     <ProductCard></ProductCard>
   </div>
@@ -47,6 +54,7 @@ export default {
   },
   data() {
     return {
+      loading: true,
       parallaxSwiperWidth: 0,
       images: [
         {
@@ -76,6 +84,12 @@ export default {
       ],
     };
   },
+  mounted() {
+    // Simulate an asynchronous operation like data fetching
+    setTimeout(() => {
+      this.loading = false;
+    }, 1000);
+  },
 };
 </script>
 
@@ -91,5 +105,18 @@ export default {
   left: 0;
   padding: 1rem;
   color: white;
+}
+.skeleton-loader-banner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.skeleton-box {
+  width: 100%;
+  height: 700px;
+  background-color: #ccc;
+  margin: 10px;
+  border-radius: 8px;
 }
 </style>

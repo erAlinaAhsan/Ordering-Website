@@ -2,26 +2,37 @@
   <div class="container">
     <h1 class="text-xl font-medium mb-6">You may also like</h1>
     <div class="product-container">
-      <router-link
-        v-for="product in products"
-        :key="product.id"
-        :to="{
-          name: 'ProductDetails',
-          params: { id: product.id },
-          query: { product: JSON.stringify(product) },
-        }"
-      >
-        <img :src="product.image" alt="Product Image" class="product-image" />
-        <div class="product-details">
-          <p class="font-semibold">{{ product.name }}</p>
-          <!-- <button class="add-to-cart-btn" @click="addToCart(product)">
-            ADD TO CART
-          </button> -->
+      <template v-if="!loading">
+        <router-link
+          v-for="product in products"
+          :key="product.id"
+          :to="{
+            name: 'ProductDetails',
+            params: { id: product.id },
+            query: { product: JSON.stringify(product) },
+          }"
+        >
+          <img :src="product.image" alt="Product Image" class="product-image" />
+          <div class="product-details">
+            <p class="font-semibold">{{ product.name }}</p>
+            <!-- <button class="add-to-cart-btn" @click="addToCart(product)">
+              ADD TO CART
+            </button> -->
+          </div>
+        </router-link>
+      </template>
+
+      <template v-else>
+        <!-- Skeleton loader for the product cards -->
+        <div class="skeleton-loader">
+          <div v-for="index in 10" :key="index" class="skeleton-box"></div>
         </div>
-      </router-link>
+      </template>
     </div>
   </div>
 </template>
+
+
 
 <script>
 import axios from "axios";
@@ -31,6 +42,7 @@ export default {
     return {
       baseURL: "https://ecommerce.hyperzod.dev/api/user/products",
       products: [],
+      loading: true,
     };
   },
   methods: {
@@ -48,6 +60,8 @@ export default {
         this.products = shuffledProducts.slice(0, 10);
       } catch (error) {
         console.error("API Error:", error);
+      } finally {
+        this.loading = false;
       }
     },
     // addToCart(product) {
@@ -72,6 +86,19 @@ export default {
 </script>
 
 <style scoped>
+.skeleton-loader {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+}
+
+.skeleton-box {
+  width: 300px;
+  height: 250px;
+  background-color: #ccc;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
 .container {
   padding: 0 1.5rem;
 }

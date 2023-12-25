@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-center mt-8">
+  <div v-if="!loading" class="flex justify-center mt-8">
     <div class="w-full md:w-8/12 lg:w-6/12">
       <div>
         <img v-if="product.image" :src="product.image" class="product-image" />
@@ -24,6 +24,10 @@
       </div>
     </div>
   </div>
+  <div v-else class="skeleton-loader-banner">
+    <!-- You can customize the skeleton loader elements and styles -->
+    <div class="skeleton-box" v-for="n in 1" :key="n"></div>
+  </div>
 </template>
 
 <script>
@@ -38,6 +42,7 @@ export default {
   },
   data() {
     return {
+      loading: true,
       successMessage: null,
     };
   },
@@ -115,9 +120,28 @@ export default {
       }
     },
   },
+  mounted() {
+    // Simulate an asynchronous operation like data fetching
+    setTimeout(() => {
+      this.loading = false;
+    }, 1000);
+  },
 };
 </script>
 
 <style scoped>
+.skeleton-loader-banner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.skeleton-box {
+  width: 800px;
+  height: 600px;
+  background-color: #ccc;
+  margin: 10px;
+  border-radius: 8px;
+}
 /* Add styles as needed */
 </style>
