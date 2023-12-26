@@ -4,7 +4,7 @@
 
     <h2 class="text-2xl font-medium text-left py-4">YOUR ORDER</h2>
     <div v-if="order">
-      <p>Order ID: {{ order[0].id }}</p>
+      <p class="background">Order ID: {{ order[0].id }}</p>
       <p>Total Price: &#8377;{{ order[0].total_price }}</p>
       <p>Status: {{ order[0].status }}</p>
       <p>Payment Status: {{ order[0].payment_status }}</p>
@@ -19,7 +19,7 @@
 
       <div v-for="(product, index) in productArray" :key="index">
         <hr class="my-2" />
-        <p>Product ID: {{ product.product_id }}</p>
+        <p class="background">Product ID: {{ product.product_id }}</p>
         <p>Quantity: {{ product.quantity }}</p>
         <p>Product Name: {{ product.product.name }}</p>
         <p>Product Price: &#8377;{{ product.product.price }}</p>
@@ -92,6 +92,9 @@ export default {
   background-color: #ccc;
   margin: 10px;
   border-radius: 8px;
+}
+.background {
+  background-color: rgb(190, 187, 187);
 }
 /* Add any custom styles here */
 </style>

@@ -3,14 +3,14 @@
     <div class="flex items-center bg-black p-4">
       <div class="flex items-center">
         <h1
-          class="text-white font-semibold text-xl mr-4 hidden md:block"
+          class="text-white font-semibold text-xl mr-4 cursor-pointer"
           @click="redirectToHome"
         >
           Qart
         </h1>
       </div>
 
-      <div class="my-auto mt-1 ml-auto relative">
+      <div class="my-auto mt-1 ml-auto relative hidden md:block">
         <input
           type="text"
           class="p-2 rounded border-none"
@@ -34,30 +34,17 @@
       </div>
 
       <div class="ml-auto">
-        <button class="rounded-full" @click="redirectToCart">
-          <img
-            :src="require('@/assets/carttt.png')"
-            class="w-9 h-9 rounded-full"
-          />
+        <button
+          class="mt-2 mr-4 bg-gray-200 text-gray-800 px-4 py-2 rounded"
+          @click="redirectToCart"
+        >
+          Cart
         </button>
-        <button class="rounded-full ml-3" @click="redirectToAllOrders">
-          <img
-            :src="require('@/assets/cartss.png')"
-            class="w-9 h-9 rounded-full"
-          />
-        </button>
-        <!-- <li @click="redirectToLogin" class="p-2 cursor-pointer">Login</li> -->
-        <button class="rounded-full ml-3" @click="redirectToSignUp">
-          <img
-            :src="require('@/assets/sign.png')"
-            class="w-9 h-9 rounded-full hidden md:block"
-          />
-        </button>
-        <button class="rounded-full ml-3" @click="redirectToLogout">
-          <img
-            :src="require('@/assets/log.png')"
-            class="w-9 h-9 rounded-full"
-          />
+        <button
+          class="mt-2 mr-4 bg-gray-200 text-gray-800 px-4 py-2 rounded"
+          @click="redirectToAllOrders"
+        >
+          Profile
         </button>
       </div>
     </div>
@@ -145,48 +132,41 @@ export default {
         this.$router.push("/login");
       }
     },
-    redirectToSignUp() {
-      this.$router.push("/register");
-    },
-
-    // redirectToLogin() {
-    //   this.$router.push("/login");
-    // },
 
     redirectToAllOrders() {
       this.$router.push("/all-orders");
     },
 
-    async redirectToLogout() {
-      const confirmLogout = confirm("Are you sure you want to log out?");
-      if (confirmLogout) {
-        const token = localStorage.getItem("authToken");
-        if (token) {
-          try {
-            // Call your logout API here, replace the URL with your actual logout endpoint
-            await axios.post(
-              "https://ecommerce.hyperzod.dev/api/user/logout",
-              {}, // You may pass any additional data required for logout
-              {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
-              }
-            );
+    // async redirectToLogout() {
+    //   const confirmLogout = confirm("Are you sure you want to log out?");
+    //   if (confirmLogout) {
+    //     const token = localStorage.getItem("authToken");
+    //     if (token) {
+    //       try {
+    //         // Call your logout API here, replace the URL with your actual logout endpoint
+    //         await axios.post(
+    //           "https://ecommerce.hyperzod.dev/api/user/logout",
+    //           {}, // You may pass any additional data required for logout
+    //           {
+    //             headers: {
+    //               Authorization: `Bearer ${token}`,
+    //             },
+    //           }
+    //         );
 
-            // Clear the token from local storage or any other cleanup steps
-            localStorage.removeItem("authToken");
-            localStorage.removeItem("cartId");
-            localStorage.removeItem("user_id");
+    //         // Clear the token from local storage or any other cleanup steps
+    //         localStorage.removeItem("authToken");
+    //         localStorage.removeItem("cartId");
+    //         localStorage.removeItem("user_id");
 
-            // Redirect to the login page
-            this.$router.push("/login");
-          } catch (error) {
-            console.error("Logout Error:", error);
-          }
-        }
-      }
-    },
+    //         // Redirect to the login page
+    //         this.$router.push("/login");
+    //       } catch (error) {
+    //         console.error("Logout Error:", error);
+    //       }
+    //     }
+    //   }
+    // },
     redirectToHome() {
       this.$router.push("/home");
     },
@@ -196,3 +176,9 @@ export default {
   },
 };
 </script>
+<style scoped>
+.search-input {
+  width: 100% !important;
+}
+</style>
+
