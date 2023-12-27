@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <br />
     <h1 class="text-xl font-medium mb-6">You may also like</h1>
     <div class="product-container">
       <template v-if="!loading">

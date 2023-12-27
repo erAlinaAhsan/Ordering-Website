@@ -36,12 +36,10 @@ import ProductCard from "../components/ProductCard.vue";
 import ShopByCategory from "../components/ShopByCategory.vue";
 import "swiper/css";
 import "swiper/css/navigation";
-import image1 from "../assets/banner-1.jpg";
-import image2 from "../assets/banner-b.jpg";
-import image3 from "../assets/banner-c.jpg";
-import image4 from "../assets/banner-hoodies.jpg";
-import image5 from "../assets/banner-jackets.jpg";
-import image6 from "../assets/banner-sale.jpg";
+import image1 from "../assets/banner1.png";
+import image2 from "../assets/banner2.png";
+import image3 from "../assets/banner3.png";
+import image4 from "../assets/banner4.png";
 // SwiperCore.use([Navigation, Parallax, Scrollbar, A11y]);
 export default {
   name: "HomeView",
@@ -72,14 +70,6 @@ export default {
         {
           id: 4,
           imageUrl: image4,
-        },
-        {
-          id: 5,
-          imageUrl: image5,
-        },
-        {
-          id: 6,
-          imageUrl: image6,
         },
       ],
     };
@@ -113,8 +103,8 @@ export default {
 }
 
 .skeleton-box {
-  width: 100%;
-  height: 700px;
+  width: 90%;
+  height: 400px;
   background-color: #ccc;
   margin: 10px;
   border-radius: 8px;

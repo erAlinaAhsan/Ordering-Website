@@ -43,7 +43,7 @@
                     &#8377;{{ calculateItemTotalPrice(item) }}
                   </p>
                 </td>
-                <td>
+                <td class="cursor-pointer">
                   <a @click="removeCartItem(index)">X</a>
                 </td>
               </tr>

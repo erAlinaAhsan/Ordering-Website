@@ -10,7 +10,9 @@
         </h1>
       </div>
 
-      <div class="my-auto mt-1 ml-auto relative hidden md:block">
+      <div
+        class="my-auto mt-1 ml-auto relative hidden md:block search-dropdown"
+      >
         <input
           type="text"
           class="p-2 rounded border-none"
@@ -41,7 +43,7 @@
           Cart
         </button>
         <button
-          class="mt-2 mr-4 bg-gray-200 text-gray-800 px-4 py-2 rounded"
+          class="mt-2 mr-4 bg-gray-200 text-gray-800 font-medium px-4 py-2 rounded"
           @click="redirectToAllOrders"
         >
           Profile
@@ -179,6 +181,10 @@ export default {
 <style scoped>
 .search-input {
   width: 100% !important;
+}
+.search-dropdown {
+  position: relative;
+  z-index: 99; /* Ensure the search dropdown appears over other elements */
 }
 </style>
 
